@@ -54,3 +54,19 @@ spring:
 logging:
   level:
     root: info
+
+management:
+  endpoints.web.exposure.include: "*"
+  metrics.tags:
+    application: ${spring.application.name}
+
+mybatis:
+  configuration.map-underscore-to-camel-case: true
+mybatis-plus:
+  mapper-locations: classpath:mapper/**/*.xml
+  configuration:
+    map-underscore-to-camel-case: true
+  global-config:
+    field-strategy: 1
+    db-column-underline: true
+    banner: off
