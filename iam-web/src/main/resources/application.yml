@@ -28,6 +28,7 @@ spring:
     date-format: yyyy-MM-dd HH:mm:ss
   datasource:
     type: com.zaxxer.hikari.HikariDataSource
+
     hikari:
       minimum-idle: 5
       maximum-pool-size: 20
