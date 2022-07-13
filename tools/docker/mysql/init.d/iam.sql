@@ -3,11 +3,29 @@ database if not exists iam default character set utf8mb4 collate utf8mb4_unicode
 use
 iam;
 
+drop table if exists sec_org;
+create table sec_org
+(
+    id          bigint      not null auto_increment,
+    `name`      varchar(32) not null,
+    `type`      varchar(4) comment 'type',
+    status      varchar(4) comment 'status。0: disabled, 1: enabled',
+    remark      varchar(16),
+    sort        int(8) not null default 0,
+    creator     varchar(32),
+    create_time datetime default current_timestamp,
+    editor      varchar(32),
+    update_time datetime default current_timestamp on update current_timestamp,
+    primary key (id),
+    key (update_time)
+) engine = innodb;
+
 drop table if exists sec_dept;
 create table sec_dept
 (
     id             bigint      not null auto_increment,
-    `parent_id`    bigint comment 'parent dept id, null means top dept',
+    org_id         bigint      not null,
+    parent_id      bigint comment 'parent dept id, null means top dept',
     `name`         varchar(32) not null,
     `type`         varchar(4) comment 'type',
     dept_id_path   varchar(256),
@@ -23,6 +41,20 @@ create table sec_dept
     key (update_time)
 ) engine = innodb;
 
+drop table if exists sec_org_dept_relation;
+create table sec_org_dept_relation
+(
+    id          bigint not null auto_increment,
+    org_id      bigint not null,
+    dept_id     bigint not null,
+    creator     varchar(32),
+    create_time datetime default current_timestamp,
+    editor      varchar(32),
+    update_time datetime default current_timestamp on update current_timestamp,
+    primary key (id),
+    key (update_time)
+) engine = innodb;
+
 drop table if exists sec_user;
 create table sec_user
 (
@@ -34,6 +66,20 @@ create table sec_user
     `type`      varchar(4) comment 'type',
     status      varchar(4)  not null comment 'status. 0: disabled, 1: enabled',
     remark      varchar(16),
+    creator     varchar(32),
+    create_time datetime default current_timestamp,
+    editor      varchar(32),
+    update_time datetime default current_timestamp on update current_timestamp,
+    primary key (id),
+    key (update_time)
+) engine = innodb;
+
+drop table if exists sec_user_dept_relation;
+create table sec_user_dept_relation
+(
+    id          bigint not null auto_increment,
+    user_id     bigint not null,
+    dept_id     bigint not null,
     creator     varchar(32),
     create_time datetime default current_timestamp,
     editor      varchar(32),
