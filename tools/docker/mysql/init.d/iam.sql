@@ -27,6 +27,7 @@ drop table if exists sec_user;
 create table sec_user
 (
     id          bigint      not null auto_increment,
+    dept_id     bigint      not null,
     username    varchar(32) not null comment 'user name',
     password    varchar(64) not null comment 'user password',
     salt        varchar(16) not null comment 'random salt',
@@ -37,20 +38,6 @@ create table sec_user
     create_time datetime default current_timestamp,
     editor      varchar(32),
     update_time datetime default current_timestamp on update current_timestamp,
-    primary key (id),
-    key (update_time)
-) engine = innodb;
-
-drop table if exists sec_user_dept_relation;
-create table sec_user_dept_relation
-(
-    id              bigint not null auto_increment,
-    user_id         bigint not null,
-    dept_id bigint not null,
-    creator         varchar(32),
-    create_time     datetime default current_timestamp,
-    editor          varchar(32),
-    update_time     datetime default current_timestamp on update current_timestamp,
     primary key (id),
     key (update_time)
 ) engine = innodb;
@@ -71,12 +58,12 @@ create table sec_role
     key (update_time)
 ) engine = innodb;
 
-drop table if exists sec_user_role_relation;
-create table sec_user_role_relation
+drop table if exists sec_role_user_relation;
+create table sec_role_user_relation
 (
     id          bigint not null auto_increment,
-    user_id     bigint not null,
     role_id     bigint not null,
+    user_id     bigint not null,
     creator     varchar(32),
     create_time datetime default current_timestamp,
     editor      varchar(32),
